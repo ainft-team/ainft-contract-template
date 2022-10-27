@@ -1,0 +1,2 @@
+# ainft-contract-template
+
