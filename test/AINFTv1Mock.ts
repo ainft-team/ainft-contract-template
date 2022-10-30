@@ -89,7 +89,7 @@ describe("AINFTv1Mock", function () {
 
         await expect(
           ainftV1Mock.connect(minter).mint(ethers.constants.AddressZero, 1)
-        ).to.be.revertedWith("AINFTv1: invalid address");
+        ).to.be.revertedWith("AINFTv1: invalid to_ address");
       });
 
       it("Should revert with invalid quantity is given", async function () {
@@ -245,7 +245,7 @@ describe("AINFTv1Mock", function () {
       const nextTokenId = (await ainftV1Mock.nextTokenId()).toNumber();
       await expect(
         ainftV1Mock.connect(owner).setMaxTokenId(nextTokenId - 2)
-      ).to.be.revertedWith("AINFTv1: invalid value");
+      ).to.be.revertedWith("AINFTv1: invalid maxTokenId_");
     });
 
     it("Should set maxTokenId", async () => {
@@ -272,7 +272,7 @@ describe("AINFTv1Mock", function () {
 
       await expect(
         ainftV1Mock.connect(owner).destroy(ethers.constants.AddressZero)
-      ).to.be.revertedWith("AINFTv1: invalid address");
+      ).to.be.revertedWith("AINFTv1: invalid to_ address");
     });
 
     it("Should destroy", async () => {
