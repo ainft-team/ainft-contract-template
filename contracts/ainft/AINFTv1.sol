@@ -87,7 +87,7 @@ abstract contract AINFTv1 is ERC721Enumerable, ERC721Burnable, Ownable, AccessCo
     maxTokenId = maxTokenId_;
   }
 
-  function mint(address to_, uint256 quantity_) public onlyRole(MINTER_ROLE) returns (uint256) {
+  function mint(address to_, uint256 quantity_) public virtual onlyRole(MINTER_ROLE) returns (uint256) {
     require(to_ != address(0), "AINFTv1: invalid to_ address");
     require(0 < quantity_ && quantity_ <= maxMintQuantity, "AINFTv1: invalid quantity");
     require(nextTokenId + quantity_ - 1 <= maxTokenId, "AINFTv1: exceeds maxTokenId");
