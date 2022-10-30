@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
-import "../ainft/AINFTv1.sol";
+import '../ainft/AINFTv1.sol';
 
 contract AINFTv1Mock is AINFTv1 {
   constructor(
