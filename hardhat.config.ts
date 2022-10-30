@@ -6,6 +6,10 @@ const config: HardhatUserConfig = {
   typechain: {
     alwaysGenerateOverloads: true,
   },
+  gasReporter: {
+    enabled: true,
+    currency: "USD",
+  },
 };
 
 export default config;
