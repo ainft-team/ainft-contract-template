@@ -167,18 +167,30 @@ describe("AINFTv1Mock", function () {
       const { ainftV1Mock, minter, users } = await loadFixture(deployAINFTv1MockFixture);
 
       await expect(ainftV1Mock.connect(minter).mint(users[0].address, 1)).not.to.be.reverted;
-      await expect(ainftV1Mock.tokensOf(users[0].address, 0, 101)).to.be.revertedWith(
-        'AINFTv1: limit too large'
-      );
+      await expect(ainftV1Mock.tokensOf(users[0].address, 0, 0))
+        .to.be.revertedWithCustomError(
+          ainftV1Mock,
+          'InvalidLimit',
+        )
+        .withArgs(0, 100);
+      await expect(ainftV1Mock.tokensOf(users[0].address, 0, 101))
+        .to.be.revertedWithCustomError(
+          ainftV1Mock,
+          'InvalidLimit',
+        )
+        .withArgs(101, 100);
     });
 
     it("Should fail if invalid offset is given", async () => {
       const { ainftV1Mock, minter, users } = await loadFixture(deployAINFTv1MockFixture);
 
       await expect(ainftV1Mock.connect(minter).mint(users[0].address, 1)).not.to.be.reverted;
-      await expect(ainftV1Mock.tokensOf(users[0].address, 2, 1)).to.be.revertedWith(
-        'AINFTv1: invalid offset'
-      );
+      await expect(ainftV1Mock.tokensOf(users[0].address, 2, 1))
+        .to.be.revertedWithCustomError(
+          ainftV1Mock,
+          'InvalidOffset',
+        )
+        .withArgs(2, 1);
     });
 
     it("Should return the right tokens owned by accounts", async () => {
@@ -221,9 +233,12 @@ describe("AINFTv1Mock", function () {
       expect(await ainftV1Mock.nextTokenId()).to.equal(2);
       expect(await ainftV1Mock.balanceOf(userAddr)).to.equal(0);
       await expect(ainftV1Mock.ownerOf(1)).to.be.revertedWith("ERC721: invalid token ID");
-      await expect(ainftV1Mock.tokensOf(userAddr, 0, 1)).to.be.revertedWith(
-        "AINFTv1: invalid offset"
-      );
+      await expect(ainftV1Mock.tokensOf(userAddr, 0, 1))
+        .to.be.revertedWithCustomError(
+          ainftV1Mock,
+          'InvalidOffset',
+        )
+        .withArgs(0, 0);
     });
   });
 
