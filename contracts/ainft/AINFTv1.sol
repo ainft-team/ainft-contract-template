@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 abstract contract AINFTv1 is ERC721Enumerable, ERC721Burnable, Ownable, AccessControl {
   using Strings for uint256;
 
-  error InvalidLimit(uint256 limit, uint8 TOKEN_FETCH_LIMIT);
+  error InvalidLimit(uint256 limit, uint8 tokenFetchLimit);
   error InvalidOffset(uint256 offset, uint256 balance);
 
   uint256 public maxMintQuantity = 100;
