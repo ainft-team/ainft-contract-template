@@ -11,6 +11,9 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 abstract contract AINFTv1 is ERC721Enumerable, ERC721Burnable, Ownable, AccessControl {
   using Strings for uint256;
 
+  error InvalidLimit(uint256 limit, uint8 TOKEN_FETCH_LIMIT);
+  error InvalidOffset(uint256 offset, uint256 balance);
+
   uint256 public maxMintQuantity = 100;
   uint256 public nextTokenId = 1;
   uint256 public maxTokenId;
@@ -64,8 +67,12 @@ abstract contract AINFTv1 is ERC721Enumerable, ERC721Burnable, Ownable, AccessCo
     uint256 limit_
   ) public view returns (uint256[] memory) {
     uint256 balance = ERC721.balanceOf(owner_);
-    require(limit_ <= TOKEN_FETCH_LIMIT, "AINFTv1: limit too large");
-    require(offset_ < balance, "AINFTv1: invalid offset");
+    if (limit_ == 0 || limit_ > TOKEN_FETCH_LIMIT) {
+      revert InvalidLimit(limit_, TOKEN_FETCH_LIMIT);
+    }
+    if (offset_ >= balance) {
+      revert InvalidOffset(offset_, balance);
+    }
 
     uint256 numToReturn = (offset_ + limit_ <= balance) ? limit_ : balance - offset_;
     uint256[] memory ownedTokens = new uint256[](numToReturn);
