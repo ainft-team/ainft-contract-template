@@ -78,17 +78,17 @@ abstract contract AINFTv1 is ERC721Enumerable, ERC721Burnable, Ownable, AccessCo
   // ============= TX
 
   function setBaseURI(string calldata baseURI_) public onlyRole(OWNER_ROLE) {
-    require(bytes(baseURI_).length > 0, "AINFTv1: invalid value");
+    require(bytes(baseURI_).length > 0, "AINFTv1: invalid baseURI_");
     baseURI = baseURI_;
   }
 
   function setMaxTokenId(uint256 maxTokenId_) public onlyRole(OWNER_ROLE) {
-    require(nextTokenId - 1 <= maxTokenId_, "AINFTv1: invalid value");
+    require(nextTokenId - 1 <= maxTokenId_, "AINFTv1: invalid maxTokenId_");
     maxTokenId = maxTokenId_;
   }
 
   function mint(address to_, uint256 quantity_) public onlyRole(MINTER_ROLE) returns (uint256) {
-    require(to_ != address(0), "AINFTv1: invalid address");
+    require(to_ != address(0), "AINFTv1: invalid to_ address");
     require(0 < quantity_ && quantity_ <= maxMintQuantity, "AINFTv1: invalid quantity");
     require(nextTokenId + quantity_ - 1 <= maxTokenId, "AINFTv1: exceeds maxTokenId");
     
@@ -107,7 +107,7 @@ abstract contract AINFTv1 is ERC721Enumerable, ERC721Burnable, Ownable, AccessCo
   }
 
   function destroy(address payable to_) public onlyRole(OWNER_ROLE) {
-    require(to_ != address(0), "AINFTv1: invalid address");
+    require(to_ != address(0), "AINFTv1: invalid to_ address");
     selfdestruct(to_);
   }
 
