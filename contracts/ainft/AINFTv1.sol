@@ -7,6 +7,7 @@ import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/access/AccessControl.sol';
+import '../interfaces/IAINFTv1.sol';
 
 abstract contract AINFTv1 is
   ERC721Enumerable,
@@ -19,12 +20,13 @@ abstract contract AINFTv1 is
   error InvalidLimit(uint256 limit, uint8 tokenFetchLimit);
   error InvalidOffset(uint256 offset, uint256 balance);
 
+  bytes32 public constant OWNER_ROLE = keccak256('OWNER');
+  bytes32 public constant MINTER_ROLE = keccak256('MINTER');
   uint256 public maxMintQuantity = 100;
   uint256 public nextTokenId = 1;
   uint256 public maxTokenId;
-  bytes32 public constant OWNER_ROLE = keccak256('OWNER');
-  bytes32 public constant MINTER_ROLE = keccak256('MINTER');
   string public baseURI = '';
+  bytes4 public immutable interfaceId;
   uint8 private constant TOKEN_FETCH_LIMIT = 100;
 
   event Mint(
@@ -48,6 +50,7 @@ abstract contract AINFTv1 is
 
     baseURI = baseURI_;
     maxTokenId = maxTokenId_;
+    interfaceId = type(IAINFTv1).interfaceId;
   }
 
   // ============= QUERY
@@ -59,7 +62,9 @@ abstract contract AINFTv1 is
     override(AccessControl, ERC721, ERC721Enumerable)
     returns (bool)
   {
-    return super.supportsInterface(interfaceId_);
+    return
+      type(IAINFTv1).interfaceId == interfaceId_ ||
+      super.supportsInterface(interfaceId_);
   }
 
   function tokenURI(uint256 tokenId_)

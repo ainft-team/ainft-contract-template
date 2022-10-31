@@ -53,6 +53,19 @@ describe('AINFTv1Mock', function () {
 
       expect(await ainftV1Mock.maxTokenId()).to.equal(maxTokenId);
     });
+
+    it('Should support AINFTv1 interface', async function () {
+      const { ainftV1Mock } = await loadFixture(deployAINFTv1MockFixture);
+
+      expect(await ainftV1Mock.supportsInterface(0xffffffff)).to.equal(false);
+
+      expect(await ainftV1Mock.supportsInterface(0x01ffc9a7)).to.equal(true); // ERC165
+      expect(await ainftV1Mock.supportsInterface(0x80ac58cd)).to.equal(true); // ERC721
+      expect(await ainftV1Mock.supportsInterface(0x780e9d63)).to.equal(true); // ERC721Enumerable
+      expect(await ainftV1Mock.supportsInterface(0x5b5e139f)).to.equal(true); // ERC721Metadata
+      expect(await ainftV1Mock.supportsInterface(0x7965db0b)).to.equal(true); // AccessControl
+      expect(await ainftV1Mock.supportsInterface(ainftV1Mock.interfaceId())).to.equal(true);
+    });
   });
 
   describe('Roles', function () {

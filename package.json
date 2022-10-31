@@ -5,7 +5,8 @@
   "author": "AINFT Team",
   "license": "MIT",
   "files": [
-    "contracts/ainft/*.sol"
+    "contracts/ainft/*.sol",
+    "contracts/interfaces/*.sol"
   ],
   "scripts": {
     "compile": "npx hardhat compile && tsc",
