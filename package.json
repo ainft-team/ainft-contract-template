@@ -1,7 +1,7 @@
 {
-  "name": "ainft-contract-template",
+  "name": "ainft-contracts",
   "version": "1.0.0",
-  "repository": "git@github.com:ainft-team/ainft-contract-template.git",
+  "repository": "git@github.com:ainft-team/ainft-contracts.git",
   "author": "AINFT Team",
   "license": "MIT",
   "files": [
