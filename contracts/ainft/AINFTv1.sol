@@ -39,7 +39,8 @@ abstract contract AINFTv1 is
     string memory baseURI_,
     uint256 maxTokenId_
   ) ERC721(name_, symbol_) {
-    require(bytes(baseURI_).length > 0, 'AINFTv1: invalid baseURI');
+    require(bytes(baseURI_).length > 0, 'AINFTv1: invalid baseURI_');
+    require(maxTokenId_ > 0, 'AINFTv1: invalid maxTokenId_');
 
     _grantRole(OWNER_ROLE, msg.sender);
     _grantRole(MINTER_ROLE, msg.sender);
@@ -123,7 +124,7 @@ abstract contract AINFTv1 is
     require(to_ != address(0), 'AINFTv1: invalid to_ address');
     require(
       0 < quantity_ && quantity_ <= maxMintQuantity,
-      'AINFTv1: invalid quantity'
+      'AINFTv1: invalid quantity_'
     );
     require(
       nextTokenId + quantity_ - 1 <= maxTokenId,

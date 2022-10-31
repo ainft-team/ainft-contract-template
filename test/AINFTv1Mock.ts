@@ -96,10 +96,10 @@ describe('AINFTv1Mock', function () {
         const { ainftV1Mock, minter } = await loadFixture(deployAINFTv1MockFixture);
 
         await expect(ainftV1Mock.connect(minter).mint(minter.address, 0)).to.be.revertedWith(
-          'AINFTv1: invalid quantity',
+          'AINFTv1: invalid quantity_',
         );
         await expect(ainftV1Mock.connect(minter).mint(minter.address, 101)).to.be.revertedWith(
-          'AINFTv1: invalid quantity',
+          'AINFTv1: invalid quantity_',
         );
       });
 
