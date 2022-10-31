@@ -1,4 +1,4 @@
-# ainft-contract-template
+# ainft-contracts
 
 ### Install dependencies
 
