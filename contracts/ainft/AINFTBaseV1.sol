@@ -7,9 +7,9 @@ import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/access/AccessControl.sol';
-import '../interfaces/IAINFTv1.sol';
+import '../interfaces/IAINFTBaseV1.sol';
 
-abstract contract AINFTv1 is
+abstract contract AINFTBaseV1 is
   ERC721Enumerable,
   ERC721Burnable,
   Ownable,
@@ -50,7 +50,7 @@ abstract contract AINFTv1 is
 
     baseURI = baseURI_;
     maxTokenId = maxTokenId_;
-    interfaceId = type(IAINFTv1).interfaceId;
+    interfaceId = type(IAINFTBaseV1).interfaceId;
   }
 
   // ============= QUERY
@@ -63,7 +63,7 @@ abstract contract AINFTv1 is
     returns (bool)
   {
     return
-      type(IAINFTv1).interfaceId == interfaceId_ ||
+      type(IAINFTBaseV1).interfaceId == interfaceId_ ||
       super.supportsInterface(interfaceId_);
   }
 
