@@ -26,7 +26,6 @@ abstract contract AINFTBaseV1 is
   uint256 public nextTokenId = 1;
   uint256 public maxTokenId;
   string public baseURI = '';
-  bytes4 public immutable interfaceId;
   uint8 private constant TOKEN_FETCH_LIMIT = 100;
 
   event Mint(
@@ -50,7 +49,6 @@ abstract contract AINFTBaseV1 is
 
     baseURI = baseURI_;
     maxTokenId = maxTokenId_;
-    interfaceId = type(IAINFTBaseV1).interfaceId;
   }
 
   // ============= QUERY
