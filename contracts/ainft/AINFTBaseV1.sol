@@ -25,7 +25,7 @@ abstract contract AINFTBaseV1 is
   uint256 public nextTokenId = 1;
   uint256 public maxTokenId;
   uint8 public constant MAX_MINT_QUANTITY = 100;
-  uint8 private constant TOKEN_FETCH_LIMIT = 100;
+  uint8 public constant TOKEN_FETCH_LIMIT = 100;
   string public baseURI = '';
 
   event Mint(
