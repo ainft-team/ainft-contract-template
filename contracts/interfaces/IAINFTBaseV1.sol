@@ -2,7 +2,7 @@
 // AINFT Contracts v1.0.0
 pragma solidity ^0.8.9;
 
-interface IAINFTv1 {
+interface IAINFTBaseV1 {
   event Mint(
     address indexed to,
     uint256 indexed startTokenId,
