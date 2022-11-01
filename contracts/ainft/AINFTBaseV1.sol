@@ -22,12 +22,11 @@ abstract contract AINFTBaseV1 is
 
   bytes32 public constant OWNER_ROLE = keccak256('OWNER');
   bytes32 public constant MINTER_ROLE = keccak256('MINTER');
-  uint256 public maxMintQuantity = 100;
   uint256 public nextTokenId = 1;
   uint256 public maxTokenId;
+  uint8 public constant MAX_MINT_QUANTITY = 100;
+  uint8 public constant TOKEN_FETCH_LIMIT = 100;
   string public baseURI = '';
-  bytes4 public immutable interfaceId;
-  uint8 private constant TOKEN_FETCH_LIMIT = 100;
 
   event Mint(
     address indexed to,
@@ -50,7 +49,6 @@ abstract contract AINFTBaseV1 is
 
     baseURI = baseURI_;
     maxTokenId = maxTokenId_;
-    interfaceId = type(IAINFTBaseV1).interfaceId;
   }
 
   // ============= QUERY
@@ -120,7 +118,7 @@ abstract contract AINFTBaseV1 is
     maxTokenId = maxTokenId_;
   }
 
-  function mint(address to_, uint256 quantity_)
+  function mint(address to_, uint8 quantity_)
     public
     virtual
     onlyRole(MINTER_ROLE)
@@ -128,7 +126,7 @@ abstract contract AINFTBaseV1 is
   {
     require(to_ != address(0), 'AINFTv1: invalid to_ address');
     require(
-      0 < quantity_ && quantity_ <= maxMintQuantity,
+      0 < quantity_ && quantity_ <= MAX_MINT_QUANTITY,
       'AINFTv1: invalid quantity_'
     );
     require(
@@ -137,7 +135,7 @@ abstract contract AINFTBaseV1 is
     );
 
     uint256 startTokenId = nextTokenId;
-    for (uint256 i = 0; i < quantity_; i++) {
+    for (uint8 i = 0; i < quantity_; i++) {
       _safeMint(to_, nextTokenId);
       nextTokenId += 1;
     }
