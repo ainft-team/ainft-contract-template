@@ -165,7 +165,7 @@ describe('AINFTv2Mock', function () {
         const userAddr = users[0].address;
         const expectedTokenId = (await ainftV2Mock.nextTokenId()).toNumber();
         await expect(ainftV2Mock.connect(minter).mint(userAddr, 1))
-          .to.emit(ainftV2Mock,'Transfer')
+          .to.emit(ainftV2Mock, 'Transfer')
           .withArgs(ethers.constants.AddressZero, users[0].address, expectedTokenId);
         expect(await ainftV2Mock.ownerOf(expectedTokenId)).to.equal(userAddr);
         expect(await ainftV2Mock.balanceOf(userAddr)).to.equal(1);
@@ -178,9 +178,10 @@ describe('AINFTv2Mock', function () {
         expect(await ainftV2Mock.ownerOf(1)).to.equal(users[0].address);
         expect(await ainftV2Mock.balanceOf(users[0].address)).to.equal(1);
         expect(await ainftV2Mock.balanceOf(users[1].address)).to.equal(0);
-        
-        await ainftV2Mock.connect(users[0])
-          ["safeTransferFrom(address,address,uint256)"](users[0].address, users[1].address, 1);
+
+        await ainftV2Mock
+          .connect(users[0])
+          ['safeTransferFrom(address,address,uint256)'](users[0].address, users[1].address, 1);
         expect(await ainftV2Mock.ownerOf(1)).to.equal(users[1].address);
         expect(await ainftV2Mock.balanceOf(users[0].address)).to.equal(0);
         expect(await ainftV2Mock.balanceOf(users[1].address)).to.equal(1);

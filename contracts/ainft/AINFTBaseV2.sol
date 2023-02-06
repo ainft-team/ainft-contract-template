@@ -12,17 +12,8 @@ import '../interfaces/IAINFTBaseV1.sol';
 
 /**
  * @title AINFTBaseV2
- *
- * @dev Implementation of the [ERC721](https://eips.ethereum.org/EIPS/eip-721)
- * Non-Fungible Token Standard, overriding transfer and approval methods.
- * Only addresses filtered by OpenSea's [Operator Filter Registry](https://github.com/ProjectOpenSea/operator-filter-registry) are allowed.
- *
- * Token IDs are minted in sequential order (e.g. 1, 2, 3, ...)
- *
- * Assumptions:
- *
- * - The maximum mint `quantity` cannot exceed 100.
- * - The token fetch limit is 100.
+ * @dev [ERC721](https://eips.ethereum.org/EIPS/eip-721) compliant,
+ * which supports transfer and approval for allowed operators.
  */
 abstract contract AINFTBaseV2 is
   ERC721Enumerable,
