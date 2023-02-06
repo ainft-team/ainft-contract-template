@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-// AINFT Contracts v1.0.0
+// AINFT Contracts v2.0.0
 pragma solidity ^0.8.9;
 
 import {Strings} from '@openzeppelin/contracts/utils/Strings.sol';
@@ -10,6 +10,20 @@ import '@openzeppelin/contracts/access/AccessControl.sol';
 import 'operator-filter-registry/src/DefaultOperatorFilterer.sol';
 import '../interfaces/IAINFTBaseV1.sol';
 
+/**
+ * @title AINFTBaseV2
+ *
+ * @dev Implementation of the [ERC721](https://eips.ethereum.org/EIPS/eip-721)
+ * Non-Fungible Token Standard, overriding transfer and approval methods.
+ * Only addresses filtered by OpenSea's [Operator Filter Registry](https://github.com/ProjectOpenSea/operator-filter-registry) are allowed.
+ *
+ * Token IDs are minted in sequential order (e.g. 1, 2, 3, ...)
+ *
+ * Assumptions:
+ *
+ * - The maximum mint `quantity` cannot exceed 100.
+ * - The token fetch limit is 100.
+ */
 abstract contract AINFTBaseV2 is
   ERC721Enumerable,
   ERC721Burnable,
