@@ -171,8 +171,20 @@ describe('AINFTv2Mock', function () {
         expect(await ainftV2Mock.balanceOf(userAddr)).to.equal(1);
       });
 
-      // TODO: Add test case for token transfer from one account to another.
-      // ...
+      it("Should transfer token from the 'from' address to the 'to' address", async function () {
+        const { ainftV2Mock, minter, users } = await loadFixture(deployAINFTv2MockFixture);
+
+        await expect(ainftV2Mock.connect(minter).mint(users[0].address, 1)).not.to.be.reverted;
+        expect(await ainftV2Mock.ownerOf(1)).to.equal(users[0].address);
+        expect(await ainftV2Mock.balanceOf(users[0].address)).to.equal(1);
+        expect(await ainftV2Mock.balanceOf(users[1].address)).to.equal(0);
+        
+        await ainftV2Mock.connect(users[0])
+          ["safeTransferFrom(address,address,uint256)"](users[0].address, users[1].address, 1);
+        expect(await ainftV2Mock.ownerOf(1)).to.equal(users[1].address);
+        expect(await ainftV2Mock.balanceOf(users[0].address)).to.equal(0);
+        expect(await ainftV2Mock.balanceOf(users[1].address)).to.equal(1);
+      });
     });
   });
 
