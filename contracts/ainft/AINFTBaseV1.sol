@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-// AINFT Contracts v1.0.0
+// AINFT Contracts v1.1.0
 pragma solidity ^0.8.9;
 
 import {Strings} from '@openzeppelin/contracts/utils/Strings.sol';
@@ -7,13 +7,22 @@ import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/access/AccessControl.sol';
+import 'operator-filter-registry/src/DefaultOperatorFilterer.sol';
 import '../interfaces/IAINFTBaseV1.sol';
 
+/**
+ * @title AINFTBaseV1
+ * @dev [ERC721](https://eips.ethereum.org/EIPS/eip-721) compliant.
+ * @notice
+ * - v1.0.0: supports tokensOf method, which returns the owner's token ID.
+ * - v1.1.0: supports transfer and approval methods for allowed operators.
+ */
 abstract contract AINFTBaseV1 is
   ERC721Enumerable,
   ERC721Burnable,
   Ownable,
-  AccessControl
+  AccessControl,
+  DefaultOperatorFilterer
 {
   using Strings for uint256;
 
@@ -151,6 +160,49 @@ abstract contract AINFTBaseV1 is
   function destroy(address payable to_) public onlyRole(OWNER_ROLE) {
     require(to_ != address(0), 'AINFTv1: invalid to_ address');
     selfdestruct(to_);
+  }
+
+  // ============= OPENSEA REGISTRY
+
+  function setApprovalForAll(address operator, bool approved)
+    public
+    override(ERC721, IERC721)
+    onlyAllowedOperatorApproval(operator)
+  {
+    super.setApprovalForAll(operator, approved);
+  }
+
+  function approve(address operator, uint256 tokenId)
+    public
+    override(ERC721, IERC721)
+    onlyAllowedOperatorApproval(operator)
+  {
+    super.approve(operator, tokenId);
+  }
+
+  function transferFrom(
+    address from,
+    address to,
+    uint256 tokenId
+  ) public override(ERC721, IERC721) onlyAllowedOperator(from) {
+    super.transferFrom(from, to, tokenId);
+  }
+
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId
+  ) public override(ERC721, IERC721) onlyAllowedOperator(from) {
+    super.safeTransferFrom(from, to, tokenId);
+  }
+
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId,
+    bytes memory data
+  ) public override(ERC721, IERC721) onlyAllowedOperator(from) {
+    super.safeTransferFrom(from, to, tokenId, data);
   }
 
   // ============= HOOKS
