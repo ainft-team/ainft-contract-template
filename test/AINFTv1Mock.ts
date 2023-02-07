@@ -170,6 +170,22 @@ describe('AINFTv1Mock', function () {
         expect(await ainftV1Mock.ownerOf(expectedTokenId)).to.equal(userAddr);
         expect(await ainftV1Mock.balanceOf(userAddr)).to.equal(1);
       });
+
+      it("Should transfer token from the 'from' address to the 'to' address", async function () {
+        const { ainftV1Mock, minter, users } = await loadFixture(deployAINFTv1MockFixture);
+
+        await expect(ainftV1Mock.connect(minter).mint(users[0].address, 1)).not.to.be.reverted;
+        expect(await ainftV1Mock.ownerOf(1)).to.equal(users[0].address);
+        expect(await ainftV1Mock.balanceOf(users[0].address)).to.equal(1);
+        expect(await ainftV1Mock.balanceOf(users[1].address)).to.equal(0);
+
+        await ainftV1Mock
+          .connect(users[0])
+          ['safeTransferFrom(address,address,uint256)'](users[0].address, users[1].address, 1);
+        expect(await ainftV1Mock.ownerOf(1)).to.equal(users[1].address);
+        expect(await ainftV1Mock.balanceOf(users[0].address)).to.equal(0);
+        expect(await ainftV1Mock.balanceOf(users[1].address)).to.equal(1);
+      });
     });
   });
 
